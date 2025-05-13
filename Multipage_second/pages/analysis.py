@@ -1,25 +1,15 @@
-# Defining the analysis page for the Canadian Immigration Dashboard with enhanced design
 import dash
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import plotly.graph_objects as go
-import pandas as pd
 from dash.dependencies import Input, Output
+from .data_manager import load_and_prepare_data  # Relative import
 
-# Loading and preparing the data
-try:
-    df = pd.read_csv('canadian_immegration_data.csv')
-    years = [str(year) for year in range(1980, 2014)]
-    if not all(year in df.columns for year in years):
-        raise ValueError("Not all years are present in the DataFrame columns")
-    df['Total'] = df[years].sum(axis=1)
-except Exception as e:
-    print(f"Error loading data: {e}")
-    df = pd.DataFrame()
-    years = []
+# Load data
+df, years = load_and_prepare_data()
 
-# Defining color scheme for Python usage
+# Color scheme
 COLOR_SCHEME = {
     'primary': '#2b3e50',
     'secondary': '#4e5d6c',
@@ -29,7 +19,7 @@ COLOR_SCHEME = {
     'card_bg': '#ffffff'
 }
 
-# Creating the analysis page layout
+# Analysis page layout
 analysis_page = dbc.Container([
     dbc.Row([
         html.H1("Detailed Immigration Analysis",
@@ -67,15 +57,17 @@ analysis_page = dbc.Container([
         ], md=6, className="fade-in")
     ], className="my-4"),
     dbc.Row([
-        html.H3("Top 10 Regions (1980-2013)",
-                className="text-center my-4 fade-in"),
-        dcc.Graph(id='top-10-regions', className="graph-container")
-    ], className="fade-in"),
-    dbc.Row([
-        html.H3("Developed vs Developing Regions",
-                className="text-center my-4 fade-in"),
-        dcc.Graph(id='dev-vs-developing', className="graph-container")
-    ], className="fade-in"),
+        dbc.Col([
+            html.H3("Top 10 Regions (1980-2013)",
+                    className="text-center my-4 fade-in"),
+            dcc.Graph(id='top-10-regions', className="graph-container")
+        ], md=6, className="fade-in"),
+        dbc.Col([
+            html.H3("Developed vs Developing Regions",
+                    className="text-center my-4 fade-in"),
+            dcc.Graph(id='dev-vs-developing', className="graph-container")
+        ], md=6, className="fade-in")
+    ], className="my-4"),
     dbc.Row([
         html.H3("Yearly Trends: Developed vs Developing",
                 className="text-center my-4 fade-in"),
@@ -83,11 +75,8 @@ analysis_page = dbc.Container([
     ], className="fade-in")
 ], fluid=True)
 
-# Registering callbacks with the main app
-
 
 def register_callbacks(app):
-    # Callback for continent trend
     @app.callback(
         Output('continent-trend', 'figure'),
         [Input('continent-dropdown', 'value')]
@@ -98,12 +87,16 @@ def register_callbacks(app):
         continent_df = df[df['Continent'] == continent]
         yearly_totals = continent_df[years].sum()
         fig = px.line(x=years, y=yearly_totals, title=f"Immigration Trend for {continent}",
-                      labels={'x': 'Year', 'y': 'Number of Immigrants'}, color_discrete_sequence=[COLOR_SCHEME['accent']])
+                      labels={'x': 'Year', 'y': 'Number of Immigrants'},
+                      color_discrete_sequence=[COLOR_SCHEME['accent']])
         fig.update_layout(template='plotly_white',
-                          plot_bgcolor=COLOR_SCHEME['card_bg'], paper_bgcolor=COLOR_SCHEME['card_bg'])
+                          plot_bgcolor=COLOR_SCHEME['card_bg'],
+                          paper_bgcolor=COLOR_SCHEME['card_bg'],
+                          # Reduced margins
+                          margin=dict(l=40, r=40, t=60, b=40),
+                          height=400)  # Consistent height
         return fig
 
-    # Callback for region trend
     @app.callback(
         Output('region-trend', 'figure'),
         [Input('region-dropdown', 'value')]
@@ -114,15 +107,19 @@ def register_callbacks(app):
         region_df = df[df['Region'] == region]
         yearly_totals = region_df[years].sum()
         fig = px.line(x=years, y=yearly_totals, title=f"Immigration Trend for {region}",
-                      labels={'x': 'Year', 'y': 'Number of Immigrants'}, color_discrete_sequence=[COLOR_SCHEME['accent']])
+                      labels={'x': 'Year', 'y': 'Number of Immigrants'},
+                      color_discrete_sequence=[COLOR_SCHEME['accent']])
         fig.update_layout(template='plotly_white',
-                          plot_bgcolor=COLOR_SCHEME['card_bg'], paper_bgcolor=COLOR_SCHEME['card_bg'])
+                          plot_bgcolor=COLOR_SCHEME['card_bg'],
+                          paper_bgcolor=COLOR_SCHEME['card_bg'],
+                          # Reduced margins
+                          margin=dict(l=40, r=40, t=60, b=40),
+                          height=400)  # Consistent height
         return fig
 
-    # Callback for top 10 regions
     @app.callback(
         Output('top-10-regions', 'figure'),
-        [Input('top-10-regions', 'id')]  # Dummy input to trigger on load
+        [Input('top-10-regions', 'id')]
     )
     def update_top_10_regions(_):
         if df.empty:
@@ -130,30 +127,38 @@ def register_callbacks(app):
         top_regions = df.groupby('Region')['Total'].sum(
         ).sort_values(ascending=False).head(10)
         fig = px.bar(x=top_regions.index, y=top_regions.values, title="Top 10 Regions (1980-2013)",
-                     labels={'x': 'Region', 'y': 'Total Immigrants'}, color_discrete_sequence=[COLOR_SCHEME['accent']])
+                     labels={'x': 'Region', 'y': 'Total Immigrants'},
+                     color_discrete_sequence=[COLOR_SCHEME['accent']])
         fig.update_layout(template='plotly_white',
-                          plot_bgcolor=COLOR_SCHEME['card_bg'], paper_bgcolor=COLOR_SCHEME['card_bg'])
+                          plot_bgcolor=COLOR_SCHEME['card_bg'],
+                          paper_bgcolor=COLOR_SCHEME['card_bg'],
+                          # Reduced margins
+                          margin=dict(l=40, r=40, t=60, b=40),
+                          height=400,  # Consistent height
+                          xaxis_tickangle=45)  # Rotate labels
         return fig
 
-    # Callback for developed vs developing
     @app.callback(
         Output('dev-vs-developing', 'figure'),
-        [Input('dev-vs-developing', 'id')]  # Dummy input to trigger on load
+        [Input('dev-vs-developing', 'id')]
     )
     def update_dev_vs_developing(_):
         if df.empty:
             return px.pie(title="Data not available")
         dev_status = df.groupby('DevName')['Total'].sum()
-        fig = px.pie(values=dev_status.values, names=dev_status.index, title="Developed vs Developing Regions",
+        fig = px.pie(values=dev_status.values, names=dev_status.index,
+                     title="Developed vs Developing Regions",
                      color_discrete_sequence=[COLOR_SCHEME['primary'], COLOR_SCHEME['accent']])
         fig.update_layout(template='plotly_white',
-                          plot_bgcolor=COLOR_SCHEME['card_bg'], paper_bgcolor=COLOR_SCHEME['card_bg'])
+                          plot_bgcolor=COLOR_SCHEME['card_bg'],
+                          paper_bgcolor=COLOR_SCHEME['card_bg'],
+                          # Reduced margins
+                          margin=dict(l=40, r=40, t=60, b=40),
+                          height=400)  # Consistent height
         return fig
 
-    # Callback for yearly trends: developed vs developing
     @app.callback(
         Output('yearly-dev-vs-developing', 'figure'),
-        # Dummy input to trigger on load
         [Input('yearly-dev-vs-developing', 'id')]
     )
     def update_yearly_dev_vs_developing(_):
@@ -163,10 +168,15 @@ def register_callbacks(app):
         developing_df = df[df['DevName'] == 'Developing regions'][years].sum()
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=years, y=dev_df, name='Developed',
-                      line=dict(color=COLOR_SCHEME['primary'])))
-        fig.add_trace(go.Scatter(x=years, y=developing_df,
-                      name='Developing', line=dict(color=COLOR_SCHEME['accent'])))
+                                 line=dict(color=COLOR_SCHEME['primary'])))
+        fig.add_trace(go.Scatter(x=years, y=developing_df, name='Developing',
+                                 line=dict(color=COLOR_SCHEME['accent'])))
         fig.update_layout(title="Yearly Immigration: Developed vs Developing",
                           xaxis_title="Year", yaxis_title="Number of Immigrants",
-                          template='plotly_white', plot_bgcolor=COLOR_SCHEME['card_bg'], paper_bgcolor=COLOR_SCHEME['card_bg'])
+                          template='plotly_white',
+                          plot_bgcolor=COLOR_SCHEME['card_bg'],
+                          paper_bgcolor=COLOR_SCHEME['card_bg'],
+                          # Reduced margins
+                          margin=dict(l=40, r=40, t=60, b=40),
+                          height=400)  # Consistent height
         return fig

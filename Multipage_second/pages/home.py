@@ -4,25 +4,18 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
 from dash.dependencies import Input, Output
+from .data_manager import load_and_prepare_data  # Relative import
 
-# Load and prepare the data
-try:
-    df = pd.read_csv('canadian_immegration_data.csv')
-    years = [str(year) for year in range(1980, 2014)]
-    if not all(year in df.columns for year in years):
-        raise ValueError("Not all years are present in the DataFrame columns")
-    df['Total'] = df[years].sum(axis=1)
-    df['Growth'] = ((df[years[-1]] - df[years[0]]) /
-                    df[years[0]] * 100).round(1)
-    df['Variance'] = df[years].var(axis=1)
-    yearly_totals = df[years].sum()
-    peak_year = yearly_totals.idxmax()
-except Exception as e:
-    print(f"Error loading data: {e}")
-    df = pd.DataFrame()
-    years = []
-    yearly_totals = pd.Series()
-    peak_year = "N/A"
+# Load data
+df, years = load_and_prepare_data()
+
+# Rename United Kingdom
+if not df.empty:
+    df['Country'] = df['Country'].replace(
+        'United Kingdom of Great Britain and Northern Ireland', 'UK & N Ireland')
+
+yearly_totals = df[years].sum() if not df.empty else pd.Series()
+peak_year = yearly_totals.idxmax() if not df.empty else "N/A"
 
 # Color scheme
 COLOR_SCHEME = {
@@ -48,10 +41,9 @@ def insight_card(title, value, subtitle):
 # Home page layout
 home_page = dbc.Container([
     dbc.Row([
-        html.H1("Canadian Immigration Dashboard",
-                className="text-center my-4 fade-in"),
         html.P("Explore immigration trends to Canada from 1980 to 2013",
-               className="text-center mb-4 fade-in", style={'color': COLOR_SCHEME['text']}),
+               className="text-center mb-4 fade-in beautiful-subtitle",
+               style={'color': COLOR_SCHEME['text']}),
         html.Div("Data not loaded. Please check the CSV file.", className="error-message",
                  id='error-message', style={'display': 'none' if not df.empty else 'block'})
     ], justify="center"),
@@ -78,14 +70,19 @@ home_page = dbc.Container([
                              df.loc[df[[str(y) for y in range(2000, 2010)]].sum(
                                  axis=1).idxmax()]['Country'] if not df.empty else "N/A",
                              "2000–2009"), md=3),
-        dbc.Col(insight_card("Fastest Growing Source",
-                             df.loc[df['Growth'].idxmax(
-                             )]['Country'] if not df.empty else "N/A",
-                             f"{df['Growth'].max():.1f}% growth" if not df.empty else "N/A"), md=3),
-        dbc.Col(insight_card("Most Consistent Contributor",
-                             df.loc[df['Variance'].idxmin(
-                             )]['Country'] if not df.empty else "N/A",
-                             "Lowest variance"), md=3),
+
+        dbc.Col(insight_card(
+            "Largest Drop in Immigration",
+            df.loc[df['Growth'].idxmin()]['Country'] if not df.empty else "N/A",
+            f"{df['Growth'].min():.1f}% drop" if not df.empty else "N/A"
+        ), md=3),
+
+        dbc.Col(insight_card(
+            "Most Diversified Year",
+            str(df[years].gt(0).sum().idxmax()) if not df.empty else "N/A",
+            f"{df[years].gt(0).sum().max()} countries contributed" if not df.empty else "N/A"
+        ), md=3),
+
         dbc.Col(insight_card("Peak Immigration Year",
                              str(peak_year) if not df.empty else "N/A",
                              f"{yearly_totals.max():,} immigrants" if not df.empty else "N/A"), md=3)
@@ -98,14 +95,14 @@ home_page = dbc.Container([
     ], className="fade-in"),
 
     dbc.Row([
-        html.H3("Select Year for Detailed Analysis",
+        html.H3("Top Countries by Selected Year Range",
                 className="text-center my-4 fade-in"),
         html.Div([
-            dcc.Slider(
-                id='year-slider',
+            dcc.RangeSlider(
+                id='year-range-slider',
                 min=1980,
                 max=2013,
-                value=2010,
+                value=[2000, 2010],  # Default range
                 marks={str(year): str(year) for year in range(1980, 2014, 5)},
                 step=1
             )
@@ -114,7 +111,7 @@ home_page = dbc.Container([
     ])
 ], fluid=True)
 
-# Register callbacks
+# Callbacks
 
 
 def register_callbacks(app):
@@ -128,25 +125,46 @@ def register_callbacks(app):
         yearly_totals = df[years].sum()
         fig = px.line(x=years, y=yearly_totals, title="Total Immigration to Canada (1980–2013)",
                       labels={'x': 'Year', 'y': 'Number of Immigrants'})
-        fig.update_layout(template='plotly_white',
-                          plot_bgcolor=COLOR_SCHEME['card_bg'],
-                          paper_bgcolor=COLOR_SCHEME['card_bg'])
+        fig.update_layout(
+            template='plotly_white',
+            plot_bgcolor=COLOR_SCHEME['card_bg'],
+            paper_bgcolor=COLOR_SCHEME['card_bg'],
+            margin=dict(l=40, r=40, t=60, b=40),
+            height=400
+        )
         return fig
 
     @app.callback(
         Output('top-10-countries-year', 'figure'),
-        [Input('year-slider', 'value')]
+        [Input('year-range-slider', 'value')]
     )
-    def update_top_10_countries(year):
+    def update_top_10_countries(year_range):
         if df.empty:
             return px.bar(title="Data not available")
-        year = str(year)
-        top_10 = df[['Country', year]].sort_values(
-            by=year, ascending=False).head(10)
-        fig = px.bar(top_10, x='Country', y=year, title=f"Top 10 Countries in {year}",
-                     labels={'y': 'Number of Immigrants'},
-                     color_discrete_sequence=[COLOR_SCHEME['accent']])
-        fig.update_layout(template='plotly_white',
-                          plot_bgcolor=COLOR_SCHEME['card_bg'],
-                          paper_bgcolor=COLOR_SCHEME['card_bg'])
+        start_year, end_year = year_range
+        selected_years = [str(year)
+                          for year in range(start_year, end_year + 1)]
+        if not selected_years:
+            return px.bar(title="No years selected")
+        df_selected = df[['Country'] + selected_years].copy()
+        df_selected['Total'] = df_selected[selected_years].sum(axis=1)
+        top_10 = df_selected[['Country', 'Total']].sort_values(
+            by='Total', ascending=False).head(10)
+        fig = px.bar(
+            top_10,
+            x='Country',
+            y='Total',
+            title=f"Top 10 Countries ({start_year}–{end_year})",
+            labels={'Total': 'Number of Immigrants'},
+            color_discrete_sequence=[COLOR_SCHEME['accent']]
+        )
+        fig.update_layout(
+            template='plotly_white',
+            plot_bgcolor=COLOR_SCHEME['card_bg'],
+            paper_bgcolor=COLOR_SCHEME['card_bg'],
+            margin=dict(l=40, r=40, t=60, b=40),
+            height=400,
+            xaxis_tickangle=45,
+            showlegend=False
+        )
         return fig
