@@ -1,0 +1,177 @@
+/* Import beautiful fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+/* Reset & Body */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #2b3e50;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4 {
+    font-weight: 700;
+    color: #2b3e50;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 2.2em;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+/* Containers */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Cards */
+.card,
+.graph-container,
+.dropdown-container,
+.slider-container,
+.insights-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover,
+.insights-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Animation */
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slider Styling */
+.rc-slider-track {
+    background-color: #df691a !important;
+}
+
+.rc-slider-handle {
+    border: solid 2px #df691a !important;
+    background-color: #ffffff !important;
+}
+
+.rc-slider-handle:hover {
+    box-shadow: 0 0 6px rgba(223, 105, 26, 0.4) !important;
+}
+
+/* Dropdown Styling */
+.dash-dropdown .Select-control {
+    border-color: #cccccc !important;
+    border-radius: 10px;
+}
+
+.dash-dropdown .Select-value {
+    background-color: #df691a !important;
+    color: #ffffff !important;
+}
+
+.dash-dropdown .Select-menu-outer {
+    border-color: #cccccc !important;
+}
+
+/* Graphs */
+.graph-container {
+    min-height: 400px;
+}
+
+/* Error Message */
+.error-message {
+    color: #df691a;
+    text-align: center;
+    font-size: 1.1em;
+    margin: 20px 0;
+}
+
+/* Button Styling */
+button {
+    background-color: #df691a;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #d15f14;
+}
+
+/* Beautiful Subtitle Styling (above cards) */
+.beautiful-subtitle {
+    font-family: 'Playfair Display', Georgia, serif;
+    /* Elegant serif with fallback */
+    font-size: 1.8em;
+    /* Prominent */
+    font-weight: 700;
+    /* Bold */
+    color: #ffffff;
+    /* White text for contrast */
+    text-align: center;
+    padding: 15px 25px;
+    /* Comfortable padding */
+    background: linear-gradient(90deg, #2b3e50, #4e5d6c);
+    /* Gradient using primary and secondary colors */
+    border-radius: 12px;
+    /* Matches cards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Soft shadow */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    /* Subtle 3D effect */
+    letter-spacing: 0.5px;
+    /* Elegance */
+    margin-bottom: 20px;
+    /* Space before cards */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Hover effect */
+}
+
+.beautiful-subtitle:hover {
+    transform: translateY(-2px);
+    /* Lift on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    /* Deeper shadow */
+}
+
+/* Ensure proper layout */
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
