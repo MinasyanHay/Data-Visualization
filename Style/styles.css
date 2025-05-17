@@ -175,3 +175,613 @@ html {
 body {
     min-height: 100%;
 }
+
+/* Maps Page Styles */
+.slider-container {
+    padding: 20px 10px;
+    margin-bottom: 20px;
+}
+
+#immigration-map {
+    height: 600px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#stats-panel {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+#stats-panel p {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+#top-countries {
+    padding: 10px;
+}
+
+#top-countries ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#top-countries li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+#top-countries li:last-child {
+    border-bottom: none;
+}
+
+.card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: none;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #2b3e50;
+    color: white;
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 15px;
+    }
+    
+    #immigration-map {
+        height: 400px;
+    }
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+/* Gradient Background Header */
+.gradient-background {
+    background: linear-gradient(135deg, #4cc9f0 0%, #4361ee 100%);
+    padding: 40px 0;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    padding: 40px;
+}
+
+/* Control Panel Card */
+.control-panel-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+    margin-bottom: 30px;
+}
+
+.control-panel-card .card-title {
+    color: #4361ee;
+    font-weight: 600;
+}
+
+/* Modern Slider */
+.modern-slider {
+    padding: 20px 10px;
+}
+
+.modern-slider .rc-slider-track {
+    background-color: #4361ee;
+}
+
+.modern-slider .rc-slider-handle {
+    border-color: #4361ee;
+    background-color: white;
+}
+
+.modern-slider .rc-slider-handle:hover {
+    border-color: #4895ef;
+}
+
+/* Modern Dropdown */
+.modern-dropdown .Select-control {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+}
+
+.modern-dropdown .Select-value {
+    color: #4361ee !important;
+}
+
+/* Control Labels */
+.control-label {
+    font-weight: 600;
+    color: #4361ee;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Map Card */
+.map-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+    background: white;
+}
+
+.map-container {
+    height: 600px !important;
+    width: 100% !important;
+    min-height: 600px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.map-container .js-plotly-plot {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/* Stats Card */
+.stats-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+    background: white;
+}
+
+.stats-card .card-header {
+    background: #4361ee;
+    border-radius: 15px 15px 0 0;
+    padding: 15px 20px;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.stat-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    background: #e9ecef;
+}
+
+.stat-item i {
+    color: #4361ee;
+    margin-right: 10px;
+}
+
+/* Top Countries List */
+.top-countries-list {
+    margin-top: 15px;
+}
+
+.top-country-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f8f9fa;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.top-country-item:hover {
+    transform: translateY(-2px);
+    background: #e9ecef;
+}
+
+.country-name {
+    font-weight: 500;
+    color: #4361ee;
+}
+
+.country-value {
+    font-weight: 600;
+    color: #f72585;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gradient-background {
+        padding: 20px 0;
+    }
+
+    .header-content {
+        padding: 20px;
+    }
+
+    .control-panel-card,
+    .map-card,
+    .stats-card {
+        margin-bottom: 15px;
+    }
+
+    .stat-item {
+        padding: 10px;
+    }
+}
+
+/* Animation Effects */
+.map-card,
+.stats-card,
+.control-panel-card {
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover Effects */
+.card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+/* Additional Modern Elements */
+.modern-badge {
+    background: linear-gradient(135deg, #4cc9f0 0%, #4361ee 100%);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4 {
+    color: #ffffff;
+}
+
+body.dark-mode .card,
+body.dark-mode .graph-container,
+body.dark-mode .dropdown-container,
+body.dark-mode .slider-container,
+body.dark-mode .insights-card {
+    background: #222222;
+    color: #ffffff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .card:hover,
+body.dark-mode .insights-card:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .dash-dropdown .Select-control {
+    background-color: #333333;
+    border-color: #444444;
+    color: #ffffff;
+}
+
+body.dark-mode .dash-dropdown .Select-menu-outer {
+    background-color: #333333;
+    border-color: #444444;
+}
+
+body.dark-mode .dash-dropdown .Select-option {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+body.dark-mode .dash-dropdown .Select-option:hover {
+    background-color: #444444;
+}
+
+body.dark-mode .rc-slider-track {
+    background-color: #4361ee !important;
+}
+
+body.dark-mode .rc-slider-rail {
+    background-color: #333333 !important;
+}
+
+body.dark-mode .rc-slider-handle {
+    border-color: #4361ee !important;
+    background-color: #222222 !important;
+}
+
+body.dark-mode .rc-slider-handle:hover {
+    box-shadow: 0 0 6px rgba(67, 97, 238, 0.6) !important;
+}
+
+body.dark-mode .stat-item {
+    background: #333333;
+    color: #ffffff;
+}
+
+body.dark-mode .stat-item:hover {
+    background: #444444;
+}
+
+body.dark-mode .top-country-item {
+    background: #333333;
+    color: #ffffff;
+}
+
+body.dark-mode .top-country-item:hover {
+    background: #444444;
+}
+
+body.dark-mode .country-name {
+    color: #4895ef;
+}
+
+body.dark-mode .country-value {
+    color: #f72585;
+}
+
+body.dark-mode .control-label {
+    color: #4895ef;
+}
+
+/* Dark mode for the airport sign */
+body.dark-mode .header-section::before {
+    opacity: 0.7;
+}
+
+/* Dark mode for cards */
+body.dark-mode .control-panel-card,
+body.dark-mode .map-card,
+body.dark-mode .stats-card {
+    background: #222222;
+    border: 1px solid #333333;
+}
+
+body.dark-mode .stats-card .card-header {
+    background: #333333;
+}
+
+/* Dark mode for text */
+body.dark-mode .text-primary {
+    color: #4895ef !important;
+}
+
+body.dark-mode .text-muted {
+    color: #888888 !important;
+}
+
+/* Dark mode for links */
+body.dark-mode a {
+    color: #4895ef;
+}
+
+body.dark-mode a:hover {
+    color: #4cc9f0;
+}
+
+/* Dark mode for buttons */
+body.dark-mode .btn-outline-light {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+body.dark-mode .btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #222222;
+}
+
+/* Dark mode for footer */
+body.dark-mode footer {
+    background: #222222;
+    border-top: 1px solid #333333;
+}
+
+/* Dark mode for gradients */
+body.dark-mode .gradient-background {
+    background: linear-gradient(135deg, #222222 0%, #333333 100%);
+}
+
+/* Enhanced Card Styles */
+.insights-card {
+    background: white;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    height: 100%;
+}
+
+.insights-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.insights-card .card-title {
+    color: #2b3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.insights-card .card-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #4361ee;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.insights-card .card-subtitle {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Card Icons */
+.insights-card i {
+    transition: transform 0.3s ease;
+}
+
+.insights-card:hover i {
+    transform: scale(1.1);
+}
+
+/* Graph Cards */
+.graph-card {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.graph-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-5px);
+}
+
+.graph-card .card-header {
+    background: linear-gradient(135deg, #4361ee 0%, #4895ef 100%);
+    border: none;
+    padding: 1.5rem;
+}
+
+.graph-card .card-header h3 {
+    color: white;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Range Slider Styling */
+.rc-slider {
+    margin: 2rem 0;
+}
+
+.rc-slider-track {
+    background: linear-gradient(to right, #4361ee, #4895ef);
+    height: 4px;
+}
+
+.rc-slider-handle {
+    border: 2px solid #4361ee;
+    background: white;
+    width: 16px;
+    height: 16px;
+    margin-top: -6px;
+    box-shadow: 0 2px 8px rgba(67, 97, 238, 0.3);
+}
+
+.rc-slider-handle:hover {
+    border-color: #4895ef;
+    box-shadow: 0 2px 12px rgba(67, 97, 238, 0.5);
+}
+
+.rc-slider-rail {
+    background: #e9ecef;
+    height: 4px;
+}
+
+/* Dark Mode Enhancements */
+body.dark-mode .insights-card {
+    background: #222222;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .insights-card:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .insights-card .card-title {
+    color: #ffffff;
+}
+
+body.dark-mode .insights-card .card-value {
+    color: #4895ef;
+}
+
+body.dark-mode .insights-card .card-subtitle {
+    color: #adb5bd;
+}
+
+body.dark-mode .graph-card {
+    background: #222222;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .graph-card .card-header {
+    background: linear-gradient(135deg, #222222 0%, #333333 100%);
+}
+
+body.dark-mode .rc-slider-rail {
+    background: #333333;
+}
+
+/* Animation for value changes */
+@keyframes valueChange {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.card-value {
+    animation: valueChange 0.3s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .insights-card {
+        margin-bottom: 1rem;
+    }
+    
+    .insights-card .card-value {
+        font-size: 1.8rem;
+    }
+    
+    .insights-card .card-title {
+        font-size: 1rem;
+    }
+}
+
+/* Dark mode styles for map */
+body.dark-mode .map-container {
+    background-color: #222222 !important;
+}
+
+body.dark-mode .map-container .js-plotly-plot {
+    background-color: #222222 !important;
+}
