@@ -17,6 +17,9 @@ app = dash.Dash(__name__,
                 ],
                 suppress_callback_exceptions=True)
 
+# Expose the Flask server for Gunicorn
+server = app.server  # This is important for Gunicorn to find the server
+
 # Color schemes for light and dark modes
 LIGHT_COLORS = {
     'primary': '#2b3e50',
@@ -170,4 +173,4 @@ def update_dark_mode_state(theme_data):
 if __name__ == '__main__':
     import os
     port = int(os.environ.get('PORT', 10000))
-    server = app.run(debug=False, host = '0.0.0.0', port = port )
+    app.run_server(debug=False, host='0.0.0.0', port=port)  # Changed from app.run to app.run_server
