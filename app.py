@@ -168,4 +168,6 @@ def update_dark_mode_state(theme_data):
     return theme_data
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get('PORT', 10000))
+    server = app.run(debug=False, host = '0.0.0.0', port = port )
